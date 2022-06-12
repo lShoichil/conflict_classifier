@@ -5,9 +5,14 @@ itsdangerous==2.1.2
 Jinja2==3.1.2
 joblib==1.1.0
 MarkupSafe==2.1.1
+navec==0.10.0
 numpy==1.22.4
+razdel==0.5.0
 scikit-learn==1.1.1
 scipy==1.8.1
 sklearn==0.0
+slovnet==0.5.0
 threadpoolctl==3.1.0
+torch==1.11.0
+typing_extensions==4.2.0
 Werkzeug==2.1.2

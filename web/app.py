@@ -1,13 +1,19 @@
 from flask import Flask, render_template, request
+import torch
 import pickle
+from model import Model
+
 app = Flask(__name__)
 
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
+    prediction = ''
     if request.method == 'POST':
-        model = pickle.load(open('lr_model.pkl', 'rb'))
-        user_input = float(request.form.get('size'))
+        model = Model()
+        model.state_dict(torch.load("toxificator-512.pth", map_location=torch.device('cpu')))
+        model.eval()
+        user_input = request.form.get('user_input_text')
         prediction = model.predict([[user_input]])
         print(prediction)
     return render_template('index.html', prediction=prediction)
