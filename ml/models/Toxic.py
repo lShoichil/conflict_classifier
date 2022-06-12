@@ -5,17 +5,15 @@ import torch
 import torch.nn as nn
 from navec import Navec
 from slovnet.model.emb import NavecEmbedding
-navec = Navec.load("ml/models/navec_for_Toxic.tar")
 
 
 class Model(nn.Module):
-    def __init__(self):
+    def __init__(self, navec):
         super(Model, self).__init__()
 
         self.hidden_size = 256
         self.num_layers = 1
 
-        # TODO: enter path to navec
         self.embedding = NavecEmbedding(
             navec
         )
