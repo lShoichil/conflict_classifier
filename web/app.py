@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 import torch
 import pickle
-from model import Model
+from model import Model, predict
 
 app = Flask(__name__)
 
@@ -14,7 +14,7 @@ def home():
         model.state_dict(torch.load("toxificator-512.pth", map_location=torch.device('cpu')))
         model.eval()
         user_input = request.form.get('user_input_text')
-        prediction = model.predict([[user_input]])
+        prediction = predict(model, user_input)
         print(prediction)
     return render_template('index.html', prediction=prediction)
 

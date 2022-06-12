@@ -1,7 +1,13 @@
+import re
+import numpy as np
+
 import torch
 import torch.nn as nn
 from navec import Navec
 from slovnet.model.emb import NavecEmbedding
+
+
+navec = Navec.load("navec.tar")
 
 
 class Model(nn.Module):
@@ -13,7 +19,7 @@ class Model(nn.Module):
 
         # TODO: enter path to navec
         self.embedding = NavecEmbedding(
-            Navec.load("navec.tar")
+            navec
         )
 
         self.lstm = nn.LSTM(
@@ -66,28 +72,28 @@ class Model(nn.Module):
         return output, hidden
 
 
-# def clean(text):
-#     text = text.lower()
-#     text = re.sub(r"[^а-яА-Я]+", " ", text)
-#     text = re.sub(r"\s+", " ", text)
-#     return text.strip()
-#
-#
-# def token2idx(text):
-#     return [navec.vocab.get(token, navec.vocab.get("<unk>")) for token in text.split()]
-#
-#
-# def predict(text):
-#     text = np.array(token2idx(text))
-#
-#     model.eval()
-#     with torch.no_grad():
-#         feature = torch.from_numpy(text).view(1, -1).long()
-#         feature = feature
-#         batch_size = feature.size(0)
-#         h = model.init_hidden(batch_size)
-#
-#         output, h = model(feature, h)
-#         pred = torch.round(output.squeeze())
-#
-#     return "Фу, токсик" if pred.item() else "Ты ж мой хороший"
+def clean(text):
+    text = text.lower()
+    text = re.sub(r"[^а-яА-Я]+", " ", text)
+    text = re.sub(r"\s+", " ", text)
+    return text.strip()
+
+
+def token2idx(text):
+    return [navec.vocab.get(token, navec.vocab.get("<unk>")) for token in text.split()]
+
+
+def predict(model, text):
+    text = np.array(token2idx(text))
+
+    model.eval()
+    with torch.no_grad():
+        feature = torch.from_numpy(text).view(1, -1).long()
+        feature = feature
+        batch_size = feature.size(0)
+        h = model.init_hidden(batch_size)
+
+        output, h = model(feature, h)
+        pred = torch.round(output.squeeze())
+
+    return "Фу, токсик" if pred.item() else "Ты ж мой хороший"
