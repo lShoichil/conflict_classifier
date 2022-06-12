@@ -163,8 +163,8 @@ class SurnameClassifier(nn.Module):
 
     @staticmethod
     def init_hidden(batch_size):
-        h0 = torch.zeros((1, batch_size, 256)).cuda()
-        c0 = torch.zeros((1, batch_size, 256)).cuda()
+        h0 = torch.zeros((1, batch_size, 256))
+        c0 = torch.zeros((1, batch_size, 256))
 
         return h0, c0
 

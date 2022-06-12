@@ -5,7 +5,7 @@ import torch
 import torch.nn as nn
 from navec import Navec
 from slovnet.model.emb import NavecEmbedding
-navec = Navec.load("ml/embeddings/navec.tar")
+navec = Navec.load("ml/models/navec_for_Toxic.tar")
 
 
 class Model(nn.Module):
