@@ -46,7 +46,7 @@ class ToxicPredictor:
 
         self.model.state_dict(
             torch.load(
-                "to_upload/Toxificator-512-model.pth",
+                "to_upload/Toxificator-512-Nation_model.pth",
                 map_location=torch.device("cpu")
             ),
         )
