@@ -5,13 +5,13 @@ from .model import SurnameClassifier, SurnameVectorizer
 
 class Nation:
     def __init__(self):
-        with open("ml/surname/vectorizer.json") as file:
+        with open("surname/vectorizer.json") as file:
             self.vectorizer = SurnameVectorizer.from_serializable(json.load(file))
 
         self.model = SurnameClassifier()
         self.model.state_dict(
             torch.load(
-                "ml/surname/model.pth",
+                "surname/model.pth",
                 map_location=torch.device("cpu")
             )
         )
