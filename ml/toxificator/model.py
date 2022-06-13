@@ -7,9 +7,9 @@ from navec import Navec
 from slovnet.model.emb import NavecEmbedding
 
 
-class Model(nn.Module):
+class ToxicClassifier(nn.Module):
     def __init__(self, navec):
-        super(Model, self).__init__()
+        super(ToxicClassifier, self).__init__()
 
         self.hidden_size = 256
         self.num_layers = 1
