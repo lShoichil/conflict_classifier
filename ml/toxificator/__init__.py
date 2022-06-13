@@ -6,12 +6,12 @@ from .model import ToxicClassifier
 
 class Toxic:
     def __init__(self):
-        self.navec = Navec.load("toxificator/navec.tar")
+        self.navec = Navec.load("ml/toxificator/navec.tar")
         self.model = ToxicClassifier(self.navec)
 
         self.model.state_dict(
             torch.load(
-                "toxificator/model.pth",
+                "ml/toxificator/model.pth",
                 map_location=torch.device("cpu")
             ),
         )

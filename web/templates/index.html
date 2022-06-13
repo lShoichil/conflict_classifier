@@ -5,15 +5,600 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Linear Regression</title>
+    <link rel="stylesheet" href="../static/css/index.css">
+    {#    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">#}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <title>Conflict classifier</title>
 </head>
 <body>
-    <form method = "POST">
-        <input type="text" name="user_input_text" placeholder="Enter here"/>
-        <input type="submit" value="Submit"/>
-    </form>
-    <p>
-        {{ prediction }}
-    </p>
+<div class="container">
+    <div class="navbar">
+        <img src="../static/images/logo.png" class="logo" alt="logo">
+        <nav>
+            <ul>
+                <li><a href="">CLASSIFIER</a></li>
+                <li><a href="">ADMIN</a></li>
+                <li><a href="">LOGOUT</a></li>
+            </ul>
+        </nav>
+        {#            <img src="../static/images/menu.png" class="menu-icon">#}
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <h1>Классификатор конфликтных ситуаций</h1>
+            <p>Опишите свою уникальную ситуацию и мы попробуем определить её первопричину в соотвествии с индексами
+                Хофстеде</p>
+        </div>
+        <div class="col">
+            <form method="POST" id="contact">
+                <p>Опишите ситуацию</p> <br>
+                <textarea name="user_input_text" placeholder="Опишите свою ситуацию здесь...."
+                          tabindex="5" required></textarea>
+                <br> <br>
+                <p>Выберите происхождение участников ситуации или мы определим его сами</p> <br>
+                <div class="select-box">
+                    <div class="options-container">
+
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Африка Восток</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Африка Запад</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Арабские страны</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Аргентина</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Австралия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Австрия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Бангладеш</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Бельгия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Бразилия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Болгария</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Канада</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Чили</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Китай</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Колумбия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Хорватия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Чешская республика</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Дания</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Эль Сальвадор</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Эстония</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Финляндия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Франция</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Германия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Великобритания</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Греция</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Гонконг</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Венгрия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Индия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Индонезия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Иран</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Ирландия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Италия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Япония</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Корея, Юг</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Латвия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Литва</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Люксембург</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Малайзия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Мальта</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Мексика</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Марокко</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Нидерланды</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Новая Зеландия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Норвегия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Пакистан</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Перу</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Филиппины</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Польша</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Португалия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Румыния</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Россия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Сербия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Сингапур</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Словацкая Республика</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Словения</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Испания</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Швеция</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Швейцария</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Тайвань</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Таиланд</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Тринидад и Тобаго</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Турция</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">США</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Уругвай</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Венесуэла</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Вьетнам</label>
+                        </div>
+
+
+                    </div>
+
+                    <div class="selected"  name="user_select_nation_1" required>
+                        Выберите происхождение
+                    </div>
+
+                    <div class="search-box">
+                        <input type="text" placeholder="Напечатайте происхождение..."/>
+                    </div>
+                </div>
+                <br>
+{#                <p>Выберите происхождение участников ситуации или мы определим его сами</p> <br>#}
+                <div class="select-box">
+                    <div class="options-container">
+
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Африка Восток</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Африка Запад</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Арабские страны</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Аргентина</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Австралия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Австрия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Бангладеш</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Бельгия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Бразилия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Болгария</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Канада</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Чили</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Китай</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Колумбия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Хорватия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Чешская республика</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Дания</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Эль Сальвадор</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Эстония</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Финляндия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Франция</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Германия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Великобритания</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Греция</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Гонконг</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Венгрия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Индия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Индонезия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Иран</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Ирландия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Италия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Япония</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Корея, Юг</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Латвия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Литва</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Люксембург</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Малайзия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Мальта</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Мексика</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Марокко</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Нидерланды</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Новая Зеландия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Норвегия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Пакистан</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Перу</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Филиппины</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Польша</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Португалия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Румыния</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Россия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Сербия</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Сингапур</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Словацкая Республика</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Словения</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Испания</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Швеция</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Швейцария</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Тайвань</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Таиланд</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Тринидад и Тобаго</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Турция</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">США</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Уругвай</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Венесуэла</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" class="radio" name="category"/>
+                            <label for="film">Вьетнам</label>
+                        </div>
+
+                    </div>
+
+                    <div class="selected" name="user_select_nation_1">
+                        Выберите происхождение
+                    </div>
+
+                    <div class="search-box">
+                        <input type="text" placeholder="Напечатайте происхождение..."/>
+                    </div>
+                </div>
+                <br>
+                <p>Решение</p> <br>
+                <textarea name="user_output_text" placeholder="{{ prediction }}"
+                          tabindex="5" required></textarea>
+                <br>
+                <button name="submit" type="submit" id="contact-submit" data-submit="...Получение решения">Получить решение</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+<script src="../static/js/main.js"></script>
 </body>
 </html>

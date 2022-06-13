@@ -1,5 +1,5 @@
-from surname import Nation
-from toxificator import Toxic
+from ml.surname import Nation
+from ml.toxificator import Toxic
 import spacy
 import re
 
@@ -18,7 +18,7 @@ class Predictor:
         return text.strip()
 
     def __get_named(self, text):
-        return [ent.label_ for ent in self.nlp(text).ents]
+        return [ent.text for ent in self.nlp(text).ents if ent.label_ == "PER"]
 
     def predict(self, text):
         text = self.__clean(text)
