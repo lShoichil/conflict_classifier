@@ -1,4 +1,3 @@
-import re
 import torch
 from navec import Navec
 import numpy as np
@@ -17,18 +16,11 @@ class Toxic:
             ),
         )
 
-    @staticmethod
-    def __clean_toxic(text):
-        text = text.lower()
-        text = re.sub(r"[^а-яА-Я]+", " ", text)
-        text = re.sub(r"\s+", " ", text)
-        return text.strip()
-
     def __token2idx(self, text):
         return [self.navec.vocab.get(token, self.navec.vocab.get("<unk>")) for token in text.split()]
 
     def __preprocess_toxic(self, text):
-        return self.__token2idx(self.__clean_toxic(text))
+        return self.__token2idx(text)
 
     def predict(self, text):
         text = np.array(self.__preprocess_toxic(text))
