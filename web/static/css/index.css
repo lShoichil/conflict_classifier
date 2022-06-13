@@ -79,7 +79,8 @@ p {
 
 #contact textarea,
 #contact button[type="submit"] {
-    font: 400 12px/16px "Roboto", Helvetica, Arial, sans-serif;
+    font: 400 16px/20px "Roboto", Helvetica, Arial, sans-serif;
+    color: #2f3640;
 }
 
 #contact {
@@ -93,6 +94,21 @@ p {
     resize: none;
     width: 100%;
 }
+
+textarea {
+    width: 100%;
+    height: 150px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    font-size: 16px;
+    resize: none;
+    outline: none;
+    -moz-appearance: none;
+    border: 1px solid #999;
+}
+
 
 #contact button[type="submit"] {
     cursor: pointer;

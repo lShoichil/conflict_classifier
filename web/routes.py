@@ -35,6 +35,7 @@ class Form(FlaskForm):
 
 @main_routes.route("/", methods=["GET", "POST"])
 def home():
+    # add_country()
     prediction = ''
     form = Form()
     form.country1.choices = [(country.id, country.name) for country in Contry.query.all()]
@@ -42,7 +43,7 @@ def home():
     if request.method == 'POST':
         model_answer = Predictor()
         user_input = request.form.get('user_input_text')
-        prediction = json.dumps(model_answer.predict(user_input))
+        prediction = model_answer.predict(user_input)
         nation1 = Contry.query.filter_by(id=request.form.get('country1')).first()
         nation2 = Contry.query.filter_by(id=request.form.get('country2')).first()
         print(nation1.name)
