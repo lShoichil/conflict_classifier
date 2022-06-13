@@ -15,3 +15,10 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(80), nullable=False, unique=True)
     password = db.Column(db.String(80), nullable=True)
     admin = db.Column(db.Integer, nullable=False)
+
+
+class Contry(db.Model):
+    __tablename__ = "contries"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(150))
