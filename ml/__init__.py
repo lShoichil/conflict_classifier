@@ -1,6 +1,6 @@
-from surname import Nation
-from toxificator import Toxic
-from hofstedefier import Hofstede
+from .surname import Nation
+from .toxificator import Toxic
+from .hofstedefier import Hofstede
 import spacy
 import re
 

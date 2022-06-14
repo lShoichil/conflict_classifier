@@ -43,11 +43,14 @@ def home():
     if request.method == 'POST':
         model_answer = Predictor()
         user_input = request.form.get('user_input_text')
-        prediction = model_answer.predict(user_input)
         nation1 = Contry.query.filter_by(id=request.form.get('country1')).first()
         nation2 = Contry.query.filter_by(id=request.form.get('country2')).first()
+        nation = [nation1.name, nation2.name]
+        print(nation)
+        prediction = model_answer.predict(user_input, nation)
         print(nation1.name)
         print(nation2.name)
+        print(prediction)
         print(prediction)
 
     return render_template("index.html", prediction=prediction, form=form)

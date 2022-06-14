@@ -4,7 +4,7 @@ import numpy as np
 
 class Hofstede:
     def __init__(self):
-        self.hofstede_indexes = pd.read_csv("hofstedefier/hofstede.csv", index_col=0)
+        self.hofstede_indexes = pd.read_csv("ml/hofstedefier/hofstede.csv", index_col=0)
         self.indexes = self.hofstede_indexes.columns[2:]
         self.model = 1
 
