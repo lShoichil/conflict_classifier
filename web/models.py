@@ -1,24 +1,20 @@
 from flask_login import UserMixin
 
-from web import db, login_manager
+from web import db
 
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
+class User(UserMixin, db.Model):
+    __tablename__ = "users"
 
-
-class User(db.Model, UserMixin):
-    __tablename__ = "user"
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), nullable=False, unique=True)
-    email = db.Column(db.String(80), nullable=False, unique=True)
-    password = db.Column(db.String(80), nullable=True)
-    admin = db.Column(db.Integer, nullable=False)
+    username = db.Column(db.String(15), unique=True)
+    email = db.Column(db.String(50), unique=True)
+    password = db.Column(db.String(80))
+    admin = db.Column(db.Boolean, nullable=False)
 
 
-class Contry(db.Model):
-    __tablename__ = "contries"
+class Country(db.Model):
+    __tablename__ = "countries"
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150))

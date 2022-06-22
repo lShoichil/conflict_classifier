@@ -1,50 +1,93 @@
-from flask import flash, redirect, render_template, request, url_for, Blueprint
+from flask import redirect, render_template, url_for, Blueprint, request
 from flask_login import (
     current_user,
     login_required,
     login_user,
-    logout_user,
+    logout_user
 )
-from itsdangerous import SignatureExpired
-from web import bcrypt, db
-from .models import Contry
-import json
-from flask_wtf import FlaskForm
-from wtforms import SelectField
+
 from ml import Predictor
+from web import bcrypt, db
+from .forms import LoginForm, RegisterForm, CountryForm
+from .models import User, Country
+from web import login_manager
 
 main_routes = Blueprint("main", __name__, template_folder="templates")
 
 
-def add_country():
-    with open("web/nation_hafstede.txt", "r", encoding='utf-8') as file:
-        nations = list(map(lambda x: x.replace("\n", ""), file.readlines()))
-    for nation in nations:
-        new_country = Contry(
-            name=nation
-        )
-        db.session.add(new_country)
-    db.session.commit()
-    return nations
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 
-class Form(FlaskForm):
-    country1 = SelectField('country1', choices=[])
-    country2 = SelectField('country2', choices=[])
+@main_routes.route('/')
+def index():
+    return render_template('index.html')
 
 
-@main_routes.route("/", methods=["GET", "POST"])
-def home():
-    # add_country()
+@main_routes.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user:
+            if bcrypt.check_password_hash(user.password, form.password.data):
+                login_user(user, remember=form.remember.data)
+                return redirect(url_for('main.dashboard'))
+        return '<h1>Invalid username or password</h1>'
+        # return '<h1>' + form.username.data + ' ' + form.password.data + '</h1>'
+
+    return render_template('login.html', form=form)
+
+
+@main_routes.route('/signup', methods=['GET', 'POST'])
+def signup():
+    form = RegisterForm()
+
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if not user:
+            hashed_password = bcrypt.generate_password_hash(form.password.data)
+            new_user = User(
+                username=form.username.data,
+                email=form.email.data,
+                password=hashed_password,
+                admin=False
+            )
+            db.session.add(new_user)
+            db.session.commit()
+            return '<h1>Пользователь создан</h1>'
+        return '<h1>Пользователь с таким email-ом уже существует</h1>'
+    return render_template('signup.html', form=form)
+
+
+@main_routes.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('main.index'))
+
+
+#
+# @main_routes.route('/dashboard')
+# @login_required
+# def dashboard():
+#     return render_template('dashboard.html', name=current_user.username)
+
+@main_routes.route('/dashboard', methods=["GET", "POST"])
+@login_required
+def dashboard():
+    add_country_first_try()
     prediction = ''
-    form = Form()
-    form.country1.choices = [(country.id, country.name) for country in Contry.query.all()]
-    form.country2.choices = [(country.id, country.name) for country in Contry.query.all()]
+    form = CountryForm()
+    form.country1.choices = [(country.id, country.name) for country in Country.query.all()]
+    form.country2.choices = [(country.id, country.name) for country in Country.query.all()]
     if request.method == 'POST':
         model_answer = Predictor()
         user_input = request.form.get('user_input_text')
-        nation1 = Contry.query.filter_by(id=request.form.get('country1')).first()
-        nation2 = Contry.query.filter_by(id=request.form.get('country2')).first()
+        nation1 = Country.query.filter_by(id=request.form.get('country1')).first()
+        nation2 = Country.query.filter_by(id=request.form.get('country2')).first()
         nation = [nation1.name, nation2.name]
         print(nation)
         prediction = model_answer.predict(user_input, nation)
@@ -53,4 +96,18 @@ def home():
         print(prediction)
         print(prediction)
 
-    return render_template("index.html", prediction=prediction, form=form)
+    return render_template("index__.html", prediction=prediction, form=form, name=current_user.username)
+
+
+def add_country_first_try():
+    country = Country.query.all()
+    if not country:
+        with open("web/nation_hafstede.txt", "r", encoding='utf-8') as file:
+            nations = list(map(lambda x: x.replace("\n", ""), file.readlines()))
+        for nation in nations:
+            new_country = Country(
+                name=nation
+            )
+            db.session.add(new_country)
+        db.session.commit()
+        return nations
