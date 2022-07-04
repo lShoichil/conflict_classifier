@@ -5,13 +5,16 @@ from .model import ToxicClassifier
 
 
 class Toxic:
+
+    eps = .005
+
     def __init__(self):
-        self.navec = Navec.load("ml/toxificator/navec.tar")
+        self.navec = Navec.load("toxificator/navec.tar")
         self.model = ToxicClassifier(self.navec)
 
         self.model.state_dict(
             torch.load(
-                "ml/toxificator/model.pth",
+                "toxificator/model.pth",
                 map_location=torch.device("cpu")
             ),
         )
@@ -29,11 +32,13 @@ class Toxic:
 
         with torch.no_grad():
             feature = torch.from_numpy(text).view(1, -1).long()
-            feature = feature
-            batch_size = feature.size(0)
-            h = self.model.init_hidden(batch_size)
+            output, = self.model(feature)
+            # pred = np.round(output.squeeze().item() - self.eps)
+            # pred = output.squeeze()
 
-            output, h = self.model(feature, h)
-            pred = torch.round(output.squeeze())
+            if abs(output.squeeze().item() - .5) > self.eps:
+                pred = torch.round(output.squeeze()).item()
+            else:
+                pred = 1.0
 
-        return pred.item()
+        return pred

@@ -1,5 +1,4 @@
 from nltk.stem.snowball import RussianStemmer
-from nltk.tokenize import word_tokenize
 from difflib import get_close_matches
 import pandas as pd
 import spacy
@@ -9,7 +8,7 @@ import re
 class Preprocessor:
     def __init__(self):
         self.stemmer = RussianStemmer()
-        self.df = pd.read_csv("counties.csv")
+        self.df = pd.read_csv("preprocessor/counties.csv")
         self.stemmed_countries = self.df["stemming"].tolist()
         self.nlp = spacy.load("ru_core_news_md")
 
@@ -29,18 +28,18 @@ class Preprocessor:
     def __replace_stop(self, text):
         return " ".join([token.text for token in self.nlp(text) if not token.is_stop])
 
-    @staticmethod
-    def __tokenize(text: str) -> list[str]:
-        return word_tokenize(text)
+    def __tokenize(self, text: str) -> list[str]:
+        return [token.text for token in self.nlp(text) if token.pos_ == "NOUN"]
 
     def __nation_matches(self, stemmed_tokens: list[str]) -> set[str]:
         matched_nations = set()
 
         for token in stemmed_tokens:
-            data: list[str] = get_close_matches(token, self.stemmed_countries, n=1, cutoff=.75)
+            if len(token) > 3:
+                data: list[str] = get_close_matches(token, self.stemmed_countries, n=1, cutoff=.75)
 
-            if data:
-                matched_nations.add(self.df[self.df["stemming"] == data[0]]["country"].item())
+                if data:
+                    matched_nations.add(self.df[self.df["stemming"] == data[0]]["country"].item())
 
         return matched_nations
 
@@ -63,9 +62,9 @@ class Preprocessor:
         }
 
     def preprocess(self, text: str) -> dict:
-        # return self.__get_nations(self.__clean(text))
         return {
-            "text": self.__clean(text),
+            "raw": text,
+            "cleaned": self.__clean(text),
             **self.__get_nations(self.__clean(text))
         }
 
@@ -79,4 +78,4 @@ class Preprocessor:
 #         """
 #     preprocessor = Preprocessor()
 #
-#     pprint(preprocessor.preprocess(text))
+#     print(preprocessor.preprocess(text))

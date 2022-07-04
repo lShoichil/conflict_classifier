@@ -1,8 +1,8 @@
-from .surname import Nation
-from .toxificator import Toxic
-from .hofstedefier import Hofstede
+from preprocessor import Preprocessor
+from surnamer import Nation
+from toxificator import Toxic
+from hofstedefier import Hofstede
 import spacy
-import re
 
 
 class Predictor:
@@ -10,38 +10,26 @@ class Predictor:
         self.toxic = Toxic()
         self.nation = Nation()
         self.hofstede = Hofstede()
+        self.preprocessor = Preprocessor()
         self.nlp = spacy.load("ru_core_news_md")
 
-    @staticmethod
-    def __clean(text):
-        text = text.lower()
-        text = re.sub(r"[^а-яА-Я]+", " ", text)
-        text = re.sub(r"\s+", " ", text)
-        return text.strip()
+    def predict(self, raw):
+        answer = self.preprocessor.preprocess(raw)
 
-    def __get_named(self, text):
-        return [ent.text for ent in self.nlp(text).ents if ent.label_ == "PER"]
+        answer["toxic"] = self.toxic.predict(answer["cleaned"])
 
-    def predict(self, text, nationalities: list[str] = None):
-        text = self.__clean(text)
+        if answer["persons"]:
+            answer["nationality"] = [self.nation.predict(surname) for surname in answer["persons"]]
 
-        answer = {
-            "toxic": self.toxic.predict(text)
-        }
-
-        entities = self.__get_named(text)
-
-        if entities:
-            answer["nationality"] = [self.nation.predict(surname) for surname in entities]
-
-        if not nationalities:
-            nationalities = [x["nationality"] for x in answer["nationality"]]
-
-        answer["hofstedefier"] = self.hofstede.predict(1, list(map(lambda x: x.lower(), nationalities)))
+        if answer["toxic"]:
+            answer["hofstedefier"] = self.hofstede.predict(raw)
 
         return answer
 
 
 if __name__ == '__main__':
     p = Predictor()
-    print(p.predict("Привет, Андрей", ["Бразилия", "США"]))
+    print(p.predict(
+        "Я встретил француженку у себя в Америке, и когда она подошла ко мне, чтобы отдать поприветсвовать, она поцеловала меня в щеку, я быстро отступил, чтобы нормально поговорить, но она двинулась вперед, приближаясь к моей другой щеке, которую она тоже поцеловала. В тот момент я немного не понимал, что происходит, и еще немного отступил, чтобы попытаться нормально говорить, но она продолжала двигаться вперед, чтобы снова поцеловать меня в другую щеку ... Я был немного смущен, но улыбался, а затем, когда я увидел, как она улыбается и смотрит прямо на меня, я вроде бы хотел, чтобы она хотела целоваться прямо здесь, так что на этот раз это был я, который пошел вперед и поцеловал ее языком на глазах у всех, включая ее бойфренда. Остальное вы можете себе представить."
+        )
+    )
