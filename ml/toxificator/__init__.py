@@ -6,7 +6,7 @@ from .model import ToxicClassifier
 
 class Toxic:
 
-    eps = .0005
+    eps = .005
 
     def __init__(self):
         self.navec = Navec.load("ml/toxificator/navec.tar")

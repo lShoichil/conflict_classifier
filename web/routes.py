@@ -118,15 +118,13 @@ def log_reg():
             name=register_name,
             email=register_email,
             password=hashed_password,
-            admin=False
+            admin=True
         )
         db.session.add(new_user)
         db.session.commit()
-        return '<h1>Пользователь создан</h1>'
-    # else:
-    #     return '<h1>Пользователь с таким email-ом уже существует</h1>'
+        # flash('Новый пользовататель добавлен')
 
-    return redirect(url_for('main.log_reg'))
+    return render_template("log_reg.html")
 
 
 @main_routes.route('/logout')

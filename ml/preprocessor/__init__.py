@@ -10,7 +10,7 @@ import re
 class Preprocessor:
     def __init__(self):
         self.stemmer = RussianStemmer()
-        self.df = pd.read_csv("preprocessor/counties.csv")
+        self.df = pd.read_csv("ml/preprocessor/counties.csv")
         self.stemmed_countries = self.df["stemming"].tolist()
         self.nlp = spacy.load("ru_core_news_md")
 
