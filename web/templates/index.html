@@ -1,42 +1,140 @@
-{% extends "bootstrap/base.html" %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../static/css/index.css">
+    <link rel="stylesheet" href="../static/css/bootstrap(forms_only).css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <title>Conflict classifier</title>
+</head>
+<body>
+<div class="container">
+    <div class="navbar">
+        <img src="../static/images/logo.png" class="logo" alt="logo">
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('main.main_page') }}">Помощник</a></li>
+                <li><a href="{{ url_for('main.admin_page') }}">Администратор</a></li>
+                <li><a href="{{ url_for('main.index_guide') }}">Справочник по индексам</a></li>
+                <li><a href="{{ url_for('main.logout') }}">Выйти</a></li>
+            </ul>
+        </nav>
+        {#            <img src="../static/images/menu.png" class="menu-icon">#}
+    </div>
 
-{% block title %}
-Demo App
-{% endblock %}
-
-{% block styles %}
-{{super()}}
-<link rel="stylesheet" href="{{url_for('static', filename='starter-template.css')}}">
-{% endblock %}
-
-{% block content %}
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Project name</a>
+    <div class="row">
+        <div class="col">
+            <h1>Помощник в решении конфликтных ситуаций</h1>
+            <p>Опишите свою уникальную ситуацию и мы попробуем определить её первопричину в соответствии по индексам
+                Хофстеде и дадим вам совет с пояснением </p>
         </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="{{ url_for('main.login') }}">Login</a></li>
-            <li><a href="{{ url_for('main.signup') }}">Sign Up</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
+        <div class="col">
+            <form method="POST" id="contact">
+                <p>Привет, {{ name }}. Опиши ситуацию</p>
+                <textarea name="user_input_text" placeholder="Описание ситуации"
+                          tabindex="5" required></textarea>
 
-    <div class="container">
+                {{ form.csrf_token }}
+                <div class="form-group">
+                    <p>Выберите страну</p>
+                    {{ form.nation1(class="form-control") }}
+                </div>
+                <div class="form-group">
+                    <p>Выберите страну</p>
+                    {{ form.nation2(class="form-control") }}
+                </div>
+                <div>
+                    <input type="checkbox" name="nation_checkbox" class="check-box-auto-search">
+                    <span class="remember-box">Определить национальности автоматически</span>
+                </div>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <br>
+                        {% for message in messages %}
+                            <div class="alert alert-success alert-dismissible" role="alert">
+                                Ответ системы: {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <br>
+                    {% endif %}
+                {% endwith %}
 
-      <div class="starter-template">
-        <h1>Bootstrap starter template</h1>
-        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
-      </div>
+                <button name="submit" type="submit" id="contact-submit" data-submit="...Получение решения">
+                    Проанализировать ситуацию
+                </button>
+                <button name="submit" type="submit" id="contact-submit" data-submit="...Просмотр результата"
+                        data-bs-toggle="modal" data-bs-target="#modalsolution" onclick="return false;">
+                    Показать результаты анализа
+                </button>
+            </form>
+        </div>
+    </div>
 
-    </div><!-- /.container -->
-{% endblock %}
+    <div id="modalsolution" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                {% if answer and check_toxic %}
+                    <div class="modal-header">
+                        <h3>Результат</h3>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            {% if answer.toxic %}
+                                <label>Наличие конфликта: Подтверждено</label>
+                            {% else %}
+                                <label>Наличие конфликта: Не подтверждено</label>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label>Страны участников конфликта: {{ answer.nation_1 }} и {{ answer.nation_2 }}</label> <br>
+                        </div>
+                        <div class="form-group">
+                            <label>Конфликт возник на основании следующего признака Хофстеде: {{ answer.index }}</label> <br>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Cоветы для участника из {{ answer.nation_1 }}: </label> <br>
+                            <label> {{ answer.tips_1 }} </label> <br>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Советы для участника из {{ answer.nation_2 }}:</label> <br>
+                            <label> {{ answer.tips_2 }} </label> <br>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Описание показателя индекса {{ answer.index }} для {{ answer.nation_1 }}:</label> <br>
+                            <label> {{ answer.exp_1 }} </label> <br>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Описание показателя индекса {{ answer.index }} для {{ answer.nation_2 }}:</label> <br>
+                            <label> {{ answer.exp_2 }} </label> <br>
+                        </div>
+
+
+                        </form>
+                    </div>
+                {% elif not check_toxic %}
+                    <div class="modal-header">
+                        <h3>Ваша ситуация не была определена как конфликтная</h3>
+                    </div>
+                {% else %}
+                    <div class="modal-header">
+                        <h3>Вы не проанализировали ситуацию</h3>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript" src="{{ url_for ('static', filename='js/bootstrap.min.js') }}"></script>
+</body>
+</html>
