@@ -24,24 +24,35 @@ class Hofstede:
         return np.exp(array) / np.exp(array).sum()
 
     def predict(self, x, obj: dict = None):
-        a, b = obj["values"]
-        a, b = np.array(a), np.array(b)
+        if obj is not None:
+            a, b = obj["values"]
+            a, b = np.array(a), np.array(b)
 
-        probs = self.__softmax(abs(a - b)).round(4)
-        probs_classes = np.where(probs > .2)[0]
+            probs = self.__softmax(abs(a - b)).round(4)
 
-        print(probs_classes)
+            out = self.classifier(x, list(self.candidate_labels.values()))
 
-        if len(probs_classes) > 1:
-            candidate_classes = [self.candidate_labels[obj["order"][idx]] for idx in probs_classes]
-            out = self.classifier(x, candidate_classes)
+            out_obj = {
+                key: value for key, value in zip(out["labels"], out["scores"])
+            }
+
+            probs_obj = {
+                self.candidate_labels[key]: value for key, value in zip(obj["order"], probs)
+            }
+
+            arr = [out_obj[key] + probs_obj[key] for key in self.candidate_labels.values()]
+            arr = np.array(arr)
+
+            arr = self.__softmax(arr)
+            idx = arr.argmax(axis=0)
 
             return {
-                "index": out["labels"][0],
-                "probability": out["scores"][0]
+                "index": list(probs_obj.keys())[idx],
+                "probability": arr[idx]
             }
-        else:
-            return {
-                "index": self.candidate_labels[obj["order"][probs_classes[0]]],
-                "probability": probs[probs_classes[0]]
-            }
+
+        out = self.classifier(x, list(self.candidate_labels.values()))
+        return {
+            "index": out["labels"][0],
+            "probability": out["scores"][0]
+        }

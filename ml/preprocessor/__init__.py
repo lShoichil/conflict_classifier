@@ -1,3 +1,5 @@
+from typing import Tuple, Dict, Any
+
 from nltk.stem.snowball import RussianStemmer
 from difflib import get_close_matches
 import pandas as pd
@@ -61,12 +63,11 @@ class Preprocessor:
             "persons": spacy_persons
         }
 
-    def preprocess(self, text: str) -> dict:
+    def preprocess(self, text: str) -> tuple[dict[Any, Any], str]:
         return {
-            "raw": text,
-            "cleaned": self.__clean(text),
+            # "raw": text,
             **self.__get_nations(self.__clean(text))
-        }
+        }, self.__clean(text),
 
 
 # if __name__ == '__main__':
