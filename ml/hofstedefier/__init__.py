@@ -20,6 +20,8 @@ class Hofstede:
     def predict(self, x, indexes=None):
         out = self.classifier(x, self.candidate_labels)
 
+
+
         return {
             "index": out["labels"][0],
             "probability": out["scores"][0]

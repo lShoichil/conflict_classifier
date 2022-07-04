@@ -6,15 +6,14 @@ import spacy
 
 
 class Predictor:
-    def __init__(self, indexes: dict):
+    def __init__(self):
         self.toxic = Toxic()
         self.nation = Nation()
         self.hofstede = Hofstede()
         self.preprocessor = Preprocessor()
         self.nlp = spacy.load("ru_core_news_md")
-        self.indexes = indexes
 
-    def predict(self, raw, nationalities: list[str]):
+    def predict(self, raw, indexes: list[list[int]]):
         answer = self.preprocessor.preprocess(raw)
 
         answer["toxic"] = self.toxic.predict(answer["cleaned"])
@@ -23,7 +22,6 @@ class Predictor:
             answer["nationality"] = [self.nation.predict(surname) for surname in answer["persons"]]
 
         if answer["toxic"]:
-            a, b = (self.indexes)
             answer["hofstedefier"] = self.hofstede.predict(raw, indexes)
 
         return answer
