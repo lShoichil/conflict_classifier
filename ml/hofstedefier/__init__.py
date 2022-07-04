@@ -17,7 +17,7 @@ class Hofstede:
             model="joeddav/xlm-roberta-large-xnli"
         )
 
-    def predict(self, x):
+    def predict(self, x, indexes=None):
         out = self.classifier(x, self.candidate_labels)
 
         return {
