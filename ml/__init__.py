@@ -13,7 +13,7 @@ class Predictor:
         self.preprocessor = Preprocessor()
         self.nlp = spacy.load("ru_core_news_md")
 
-    def predict(self, raw):
+    def predict(self, raw, indexes=None):
         answer = self.preprocessor.preprocess(raw)
 
         answer["toxic"] = self.toxic.predict(answer["cleaned"])
@@ -22,7 +22,7 @@ class Predictor:
             answer["nationality"] = [self.nation.predict(surname) for surname in answer["persons"]]
 
         if answer["toxic"]:
-            answer["hofstedefier"] = self.hofstede.predict(raw)
+            answer["hofstedefier"] = self.hofstede.predict(raw, indexes)
 
         return answer
 
