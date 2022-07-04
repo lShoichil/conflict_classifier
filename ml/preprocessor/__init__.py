@@ -68,15 +68,3 @@ class Preprocessor:
             # "raw": text,
             **self.__get_nations(self.__clean(text))
         }, self.__clean(text),
-
-
-# if __name__ == '__main__':
-#     text = \
-#         """
-#         Мартина из Бразилии сидела со своими друзьями в столовой, когда мимо прошел американский студент.
-#         Их взгляды случайно встретились, он сказал: «Как дела» и прошел дальше.
-#         Она чувствовала себя смущенной и растерянной.
-#         """
-#     preprocessor = Preprocessor()
-#
-#     print(preprocessor.preprocess(text))
